@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Team 1 - Letter 1</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Georgia, serif;
+      background: radial-gradient(circle at top, #3a0000 0%, #160000 35%, #050505 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #f8efe8;
+      padding: 20px;
+    }
+    .background-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at center, rgba(255, 0, 0, 0.12), transparent 55%);
+      animation: pulseGlow 3s infinite ease-in-out;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.65; }
+      50% { opacity: 1; }
+    }
+    .container { text-align: center; position: relative; z-index: 2; }
+    .title {
+      color: #ff4d4d;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      margin-bottom: 8px;
+      text-shadow: 0 0 20px rgba(255, 77, 77, 0.35);
+      letter-spacing: 2px;
+    }
+    .subtitle {
+      color: #f0c8c8;
+      margin-bottom: 32px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+    }
+    .hint {
+      color: #e7bcbc;
+      letter-spacing: 1px;
+      font-size: 0.95rem;
+      margin-top: 18px;
+    }
+    .envelope {
+      position: relative;
+      width: min(88vw, 360px);
+      height: 230px;
+      cursor: pointer;
+      transition: transform 0.25s ease;
+      filter: drop-shadow(0 0 18px rgba(255, 0, 0, 0.3));
+      margin: 0 auto;
+    }
+    .envelope:hover { transform: translateY(-6px) scale(1.02); }
+    .envelope-body {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, #7a1111, #4d0808);
+      border: 2px solid #c0392b;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .envelope-flap {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 55%;
+      background: linear-gradient(180deg, #a51717, #740c0c);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+    .seal {
+      position: absolute;
+      left: 50%; top: 48%;
+      transform: translate(-50%, -50%);
+      width: 68px; height: 68px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ff7070, #b30000 70%);
+      border: 3px solid #ffd3d3;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff4f4;
+      font-weight: bold;
+      font-size: 1.1rem;
+      box-shadow: 0 0 18px rgba(255, 0, 0, 0.45);
+      letter-spacing: 1px;
+    }
+    .seal::after { content: "P"; }
+    .label {
+      position: absolute;
+      bottom: 18px;
+      width: 100%;
+      text-align: center;
+      font-size: 1rem;
+      color: #ffe4e4;
+      letter-spacing: 2px;
+    }
+    .popup-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.76);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+      padding: 20px;
+    }
+    .popup-overlay.show { display: flex; }
+    .letter-popup {
+      width: min(92vw, 820px);
+      max-height: 88vh;
+      overflow-y: auto;
+      background: linear-gradient(180deg, #f5e8d8 0%, #ead8c2 100%);
+      color: #2e1d14;
+      border-radius: 16px;
+      padding: 32px 28px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45), 0 0 40px rgba(255, 255, 255, 0.1);
+      position: relative;
+      animation: popupIn 0.3s ease;
+      border: 1px solid rgba(80, 40, 20, 0.2);
+    }
+    @keyframes popupIn {
+      from { opacity: 0; transform: translateY(18px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .close-btn {
+      position: sticky;
+      top: 0;
+      float: right;
+      border: none;
+      background: #7a1111;
+      color: white;
+      border-radius: 999px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .letter-head {
+      text-align: center;
+      margin-bottom: 22px;
+      border-bottom: 1px solid rgba(0,0,0,0.15);
+      padding-bottom: 16px;
+    }
+    .stamp {
+      color: #8a2c2c;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+    .letter-head h2 { margin: 0; font-size: 2rem; color: #7a1111; }
+    .letter-head p { margin: 8px 0 0; color: #5e4639; font-style: italic; }
+    .letter-content {
+      line-height: 1.9;
+      font-size: 1.08rem;
+      white-space: pre-line;
+    }
+    .mission-box {
+      margin: 22px 0;
+      padding: 18px;
+      border-left: 5px solid #a51717;
+      background: rgba(122, 17, 17, 0.07);
+      border-radius: 8px;
+    }
+    .mission-box strong { color: #7a1111; }
+    .signature {
+      margin-top: 28px;
+      text-align: right;
+      font-style: italic;
+      color: #5a3428;
+    }
+    .footer-note {
+      margin-top: 16px;
+      text-align: center;
+      color: #f3d0d0;
+      font-size: 0.9rem;
+    }
+    .logo-embed {
+      display: block;
+      margin: 0 auto 20px;
+      width: 140px;
+      height: 70px;
+      border: none;
+      background: transparent;
+    }
+    .letter-head .logo-embed {
+      margin: 0 auto 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="background-glow"></div>
+  <div class="container">
+    <img src="Logo.pdf" alt="SOVIS Logo" class="logo-embed" />
+    <h1 class="title">SOVIS HEIST</h1>
+    <div class="subtitle">First National Vault • Team 1</div>
+
+    <div class="envelope" onclick="openLetter()">
+      <div class="envelope-body"></div>
+      <div class="envelope-flap"></div>
+      <div class="seal"></div>
+      <div class="label">THƯ MẬT 01</div>
+    </div>
+
+    <div class="hint">Bấm vào phong thư để mở chỉ thị đầu tiên</div>
+    <div class="footer-note">Chỉ dành cho Team 1</div>
+  </div>
+
+  <div class="popup-overlay" id="popup">
+    <div class="letter-popup">
+      <button class="close-btn" onclick="closeLetter()">Đóng</button>
+
+      <div class="letter-head">
+        <img src="Logo.pdf" alt="SOVIS Logo" class="logo-embed" />
+        <div class="stamp">FIRST NATIONAL VAULT</div>
+        <h2>MẬT THƯ – TEAM 1</h2>
+        <p>Thư số 01 • Từ The Professor</p>
+      </div>
+
+      <div class="letter-content">
+Chào mừng, Team 1.
+
+Đêm nay, các bạn sẽ là mũi đột phá đầu tiên của phi vụ tại First National Vault.
+
+Không có thời gian để lãng phí. Hệ thống an ninh của ngân hàng đang vận hành ở mức cao nhất, và chỉ cần một sai sót nhỏ, toàn bộ phi vụ sẽ sụp đổ trước khi thật sự bắt đầu.
+
+<div class="mission-box">
+<strong>🏛️ MẬT THƯ #1</strong><br><br>
+Phi vụ bắt đầu từ nơi thời gian dường như ngừng trôi.
+Những bức tường sa thạch chứng kiến bao thế hệ sinh viên,
+bao quanh một khoảng sân xanh như trái tim của ngôi trường.
+
+<strong>Hãy đến nơi quá khứ và hiện tại gặp nhau.</strong>
+</div>
+
+Tại đây, mật khẩu mở két chính đã bị phân tán thành 10 mảnh dữ liệu.
+
+Nhiệm vụ của các bạn:
+- tìm đủ 10 mảnh
+- ghép lại thành mật khẩu hoàn chỉnh
+- báo cáo lại cho chỉ huy
+
+Đừng để bất kỳ ai khác biết các bạn đang giữ gì.
+
+Bắt đầu di chuyển ngay.
+      </div>
+
+      <div class="signature">— The Professor</div>
+    </div>
+  </div>
+
+  <script>
+    function openLetter() {
+      document.getElementById("popup").classList.add("show");
+    }
+    function closeLetter() {
+      document.getElementById("popup").classList.remove("show");
+    }
+    document.getElementById("popup").addEventListener("click", function (e) {
+      if (e.target === this) closeLetter();
+    });
+  </script>
+</body>
+</html>
