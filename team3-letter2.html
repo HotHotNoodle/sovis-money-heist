@@ -34,11 +34,15 @@
     .mission-box strong { color: #7a1111; }
     .signature { margin-top: 28px; text-align: right; font-style: italic; color: #5a3428; }
     .footer-note { margin-top: 16px; text-align: center; color: #f3d0d0; font-size: 0.9rem; }
+    .logo-embed { display:block; margin:0 auto 20px; width:140px; height:70px; border:none; background:transparent; }
+    .letter-head .logo-embed { margin:0 auto 14px; }
   </style>
 </head>
 <body>
   <div class="background-glow"></div>
   <div class="container">
+    <img src="Logo.pdf" alt="SOVIS Logo" class="logo-embed" />
+
     <h1 class="title">SOVIS HEIST</h1>
     <div class="subtitle">First National Vault • Team 3</div>
     <div class="envelope" onclick="openLetter()">
@@ -54,6 +58,8 @@
     <div class="letter-popup">
       <button class="close-btn" onclick="closeLetter()">Đóng</button>
       <div class="letter-head">
+        <img src="Logo.pdf" alt="SOVIS Logo" class="logo-embed" />
+
         <div class="stamp">FIRST NATIONAL VAULT</div>
         <h2>MẬT THƯ – TEAM 3</h2>
         <p>Thư số 02 • Từ The Professor</p>
